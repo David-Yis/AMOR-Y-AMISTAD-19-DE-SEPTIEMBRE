@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Feliz Día del Amor y la Amistad</title>
+    
+    <!-- Tailwind CSS para diseño responsivo y estructuración -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Fuentes románticas -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #fba6a6 0%, #f289a3 100%);
+            touch-action: none; /* Previene scroll no deseado en móviles */
+        }
+
+        /* Tipografías Especiales */
+        .font-cursive {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        /* Animación del fondo pulsante (suave latido) */
+        @keyframes backgroundPulse {
+            0% { background: linear-gradient(135deg, #f7adad 0%, #ffb3c6 100%); }
+            50% { background: linear-gradient(135deg, #ff9aad 0%, #ff99b3 100%); }
+            100% { background: linear-gradient(135deg, #e6b4b4 0%, #ffb3c6 100%); }
+        }
+        .bg-animated {
+            animation: backgroundPulse 8s ease-in-out infinite;
+        }
+
+        /* Animación para los peluches cayendo/flotando */
+        @keyframes floatUp {
+            0% {
+                transform: translateY(110vh) translateX(0) rotate(0deg) scale(0.8);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-20vh) translateX(30px) rotate(360deg) scale(1.2);
+                opacity: 0;
+            }
+        }
+        .plushie {
+            position: absolute;
+            font-size: 2.5rem;
+            z-index: 1;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+            animation: floatUp linear forwards;
+            pointer-events: none;
+        }
+
+        /* Animación de entrada de cada rosa */
+        @keyframes popInRose {
+            0% {
+                transform: scale(0) rotate(-45deg);
+                opacity: 0;
+            }
+            70% {
+                transform: scale(1.3) rotate(10deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+        .rose-item {
+            position: absolute;
+            font-size: 3.5rem; /* Tamaño perfecto para móvil */
+            z-index: 10;
+            animation: popInRose 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            filter: drop-shadow(0 8px 10px rgba(150,0,0,0.3));
+            transition: transform 0.3s ease;
+        }
+        
+        /* Animación de latido para el ramo final */
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .bouquet-complete {
+            animation: heartbeat 2s infinite ease-in-out;
+        }
+
+        /* Animaciones para los textos */
+        .fade-in {
+            opacity: 0;
+            animation: fadeInAnim 1s ease-in forwards;
+        }
+        .fade-out {
+            animation: fadeOutAnim 1s ease-out forwards;
+        }
+        @keyframes fadeInAnim { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeOutAnim { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-10px); } }
+
+        /* Pantalla de inicio de desenfoque */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        /* Efecto destello texto final */
+        @keyframes textGlow {
+            0%, 100% { text-shadow: 0 0 10px rgba(255,0,0,0.4), 0 0 20px rgba(255,0,0,0.2); }
+            50% { text-shadow: 0 0 20px rgba(255,0,100,0.8), 0 0 30px rgba(255,0,100,0.6); }
+        }
+        .glow-text {
+            animation: textGlow 3s infinite;
+        }
+    </style>
+</head>
+<body class="bg-animated w-full h-[100dvh] relative overflow-hidden flex flex-col justify-center items-center">
+
+    <!-- La música se reproduce en bucle mientras la página permanezca abierta -->
+    <audio id="jazzAudio" autoplay loop preload="auto">
+        <source src="musica/elvis.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- PANTALLA DE INICIO (Necesaria para habilitar el audio y pantalla completa en móviles) -->
+    <div id="startScreen" class="absolute inset-0 z-50 flex flex-col justify-center items-center bg-black/40 backdrop-blur-md p-6">
+        <div class="glass-panel p-8 rounded-3xl shadow-2xl flex flex-col items-center text-center max-w-sm w-full">
+            <span class="text-6xl mb-4 animate-bounce">👩🏽‍❤️‍💋‍👨🏽</span>
+            <h1 class="font-cursive text-4xl text-rose-600 font-bold mb-2">Hola mi negra</h1>
+            <p class="text-gray-700 text-lg mb-8 font-semibold">Tengo una pequeña sorpresa preparada para ti...</p>
+            <button id="startBtn" class="bg-gradient-to-r from-rose-500 to-pink-500 text-white font-bold py-4 px-10 rounded-full shadow-lg transform transition active:scale-95 hover:scale-105 text-xl w-full">
+                Pulsa aqui para verla❤️‍🔥
+            </button>
+        </div>
+    </div>
+
+    <!-- Contenedor Principal (oculto inicialmente) -->
+    <div id="mainContainer" class="absolute inset-0 w-full h-full hidden flex flex-col">
+        
+        <!-- Contenedor de fondo para los peluches cayendo -->
+        <div id="plushiesContainer" class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none"></div>
+
+        <!-- Zona Superior: Mensajes y Frases -->
+        <div class="w-full flex-1 flex flex-col items-center pt-12 px-6 z-20 relative">
+            
+            <!-- Mensaje Final (Oculto hasta el final) -->
+            <div id="finalMessage" class="hidden flex-col items-center justify-center w-full mt-4">
+                <h1 class="font-cursive text-5xl sm:text-6xl text-rose-700 font-bold text-center leading-tight glow-text drop-shadow-md">
+                    ¡Feliz Día del Amor y la Amistad!
+                </h1>
+                <p class="mt-4 text-xl text-rose-900 font-semibold text-center bg-white/50 px-4 py-2 rounded-2xl backdrop-blur-sm">
+                    Te amo con todo mi corazón ❤️
+                </p>
+            </div>
+
+            <!-- Frases dinámicas (Mientras se forma el ramo) -->
+            <div id="phraseContainer" class="w-full h-32 flex items-center justify-center mt-10">
+                <h2 id="phraseText" class="font-cursive text-4xl text-rose-800 text-center font-bold drop-shadow-sm transition-all duration-500"></h2>
+            </div>
+        </div>
+
+        <!-- Contenedor absoluto para los ramos esparcidos -->
+        <div id="bouquetsWrapper" class="absolute inset-0 w-full h-full pointer-events-none z-10">
+            <!-- Las rosas se inyectarán aquí vía JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        // Arreglo de 65 frases cortas románticas
+        const frasesAmor = [
+            "Eres la casualidad más bonita.",
+            "Me haces inmensamente feliz.",
+            "Amo tu sonrisa, es mi luz.",
+            "Eres mi paz y mi refugio.",
+            "Mi mundo entero eres tú.",
+            "Eres mi más bella inspiración.",
+            "Me encantas de principio a fin.",
+            "Eres mi sueño hecho realidad.",
+            "Te pienso a cada instante.",
+            "Eres mi lugar favorito.",
+            "Contigo la vida es mucho mejor.",
+            "Eres mi obra de arte favorita.",
+            "Amo cada detalle de ti.",
+            "Tu existencia es pura magia.",
+            "Mi corazón te pertenece por completo.",
+            "Haces que mi vida sea hermosa.",
+            "Eres mi complemento perfecto.",
+            "Te admiro cada día más.",
+            "Eres mi todo en esta vida.",
+            "Te amo de aquí a la eternidad.",
+            "Tu voz es mi melodía favorita.",
+            "No hay nadie como tú.",
+            "Amo la forma en que me pierdo en tu belleza.",
+            "Tus abrazos son mi hogar.",
+            "Eres el amor de mi vida.",
+            "Me pierdo en tus hermosos ojos.",
+            "Mi destino era encontrarte.",
+            "Gracias por existir y ser tú.",
+            "Eres la dueña de mi corazón.",
+            "Juntos para siempre, mi amor.",
+            "Cada día te amo más.",
+            "Eres mi sol en días nublados.",
+            "Amo cómo me haces sentir.",
+            "Eres mi pensamiento favorito.",
+            "Tu amor es mi mayor tesoro.",
+            "Me haces mejor persona.",
+            "Contigo todo tiene sentido.",
+            "Eres el latido de mi corazón.",
+            "Nunca me cansaré de ti.",
+            "Tú y yo, el equipo perfecto.",
+            "Eres mi historia favorita.",
+            "Amo tu forma de ser.",
+            "Eres mi pedacito de cielo.",
+            "Contigo el tiempo vuela.",
+            "Eres mi mayor alegría.",
+            "Te elijo hoy y siempre.",
+            "Mi alma gemela eres tú.",
+            "Eres el centro de mi universo.",
+            "Amo nuestras locuras juntos.",
+            "Eres mi final feliz.",
+            "Tu sonrisa me da vida.",
+            "Me enamoras todos los días.",
+            "Eres mi puerto seguro.",
+            "Junto a ti todo es magia.",
+            "Eres la flor más hermosa.",
+            "Mi mayor bendición eres tú.",
+            "Eres el dulce de mi vida.",
+            "Amo caminar de tu mano.",
+            "Tu amor me da alas.",
+            "Mi corazón siempre te buscará.",
+            "Eres mi promesa eterna.",
+            "La mejor parte de mí eres tú.",
+            "Eres mi estrella fugaz.",
+            "Contigo hasta el fin del mundo.",
+            "Te amo más que a nada."
+        ];
+
+        // Arreglo de stickers/dibujos de peluches (Emojis en este caso para rendimiento óptimo móvil)
+        const plushies = ['♥️', '💓', '💘', '❤️‍🩹', '❤️‍🔥', '👩🏽‍❤️‍💋‍👨🏽', '🫶🏽', '🌹', '💌', '😍'];
+
+        // Elementos del DOM
+        const startScreen = document.getElementById('startScreen');
+        const startBtn = document.getElementById('startBtn');
+        const mainContainer = document.getElementById('mainContainer');
+        const plushiesContainer = document.getElementById('plushiesContainer');
+        const bouquetsWrapper = document.getElementById('bouquetsWrapper');
+        const phraseText = document.getElementById('phraseText');
+        const phraseContainer = document.getElementById('phraseContainer');
+        const finalMessage = document.getElementById('finalMessage');
+        const jazzAudio = document.getElementById('jazzAudio');
+
+        // Variables de estado
+        let roseCount = 0;
+        const totalRoses = 65;
+        let plushieInterval;
+        let bouquetInterval;
+
+        // Definimos los centros de los 6 ramos en la pantalla (vw = ancho, vh = alto)
+        // Están ubicados de la mitad de la pantalla hacia abajo para no tapar el texto
+        const bouquetCenters = [
+            { x: 50, y: 88 }, // 1. Abajo Centro
+            { x: 25, y: 75 }, // 2. Abajo Izquierda
+            { x: 75, y: 75 }, // 3. Abajo Derecha
+            { x: 18, y: 55 }, // 4. Medio Izquierda
+            { x: 82, y: 55 }, // 5. Medio Derecha
+            { x: 50, y: 62 }  // 6. Centro
+        ];
+
+        function spawnPlushie() {
+            const plushie = document.createElement('div');
+            plushie.classList.add('plushie');
+            
+            // Elegir un peluche aleatorio
+            const randomPlushie = plushies[Math.floor(Math.random() * plushies.length)];
+            plushie.innerText = randomPlushie;
+
+            // Posición aleatoria horizontal (5% a 95% de la pantalla)
+            const randomX = Math.floor(Math.random() * 90) + 5;
+            plushie.style.left = `${randomX}%`;
+
+            // Duración de caída aleatoria para dar variedad (entre 4s y 7s)
+            const randomDuration = Math.random() * 3 + 4;
+            plushie.style.animationDuration = `${randomDuration}s`;
+
+            // Tamaño aleatorio para profundidad
+            const randomScale = (Math.random() * 0.5) + 0.8;
+            plushie.style.transform = `scale(${randomScale})`;
+
+            plushiesContainer.appendChild(plushie);
+
+            // Eliminar el elemento del DOM una vez termine su animación para evitar lag
+            setTimeout(() => {
+                plushie.remove();
+            }, randomDuration * 1000);
+        }
+
+        // Utilizamos la Espiral de Fermat para crear ramos compactos e individuales
+        function getRosePosition(localIndex) {
+            const spacing = 18; // Espaciado pequeño para que los ramos se vean frondosos y unidos
+            const goldenAngle = 137.5 * (Math.PI / 180);
+            
+            const r = spacing * Math.sqrt(localIndex);
+            const theta = localIndex * goldenAngle;
+            
+            const xOffset = r * Math.cos(theta);
+            const yOffset = r * Math.sin(theta);
+            
+            return { xOffset, yOffset };
+        }
+
+        function addRose() {
+            if (roseCount >= totalRoses) {
+                finishAnimation();
+                return;
+            }
+
+            // 1. Crear la rosa
+            const rose = document.createElement('div');
+            rose.classList.add('rose-item');
+            rose.innerText = '🌹'; 
+
+            // 2. Determinar a qué ramo va esta rosa y cuál es su posición local
+            const bouquetIndex = roseCount % bouquetCenters.length; // Reparte las rosas entre los 6 ramos
+            const localIndex = Math.floor(roseCount / bouquetCenters.length); // Número de rosa dentro de ese ramo específico
+            const center = bouquetCenters[bouquetIndex];
+
+            // Obtener el offset del ramo
+            const { xOffset, yOffset } = getRosePosition(localIndex);
+            
+            // 3. Posicionar la rosa combinando la posición del ramo en pantalla (vw/vh) y el offset de la espiral (px)
+            // Restamos 25px para centrar visualmente el emoji de la rosa en su coordenada
+            rose.style.left = `calc(${center.x}vw + ${xOffset}px - 25px)`;
+            rose.style.top = `calc(${center.y}vh + ${yOffset}px - 25px)`;
+            
+            // Rotación aleatoria para que parezcan naturales
+            const randomRotation = (Math.random() * 40) - 20; 
+            rose.style.setProperty('--final-rotation', `${randomRotation}deg`);
+            
+            // Forzar reinicio de animación
+            rose.style.animation = 'none';
+            rose.offsetHeight; 
+            rose.style.animation = null; 
+            
+            bouquetsWrapper.appendChild(rose);
+
+            // 4. Actualizar la frase con efecto Fade
+            phraseText.classList.remove('fade-in');
+            phraseText.classList.add('fade-out');
+            
+            setTimeout(() => {
+                phraseText.innerText = frasesAmor[(roseCount - 1) % frasesAmor.length]; // Extrae la frase y repite si se llegara a exceder
+                phraseText.classList.remove('fade-out');
+                phraseText.classList.add('fade-in');
+            }, 300); // Mitad del tiempo de transición
+
+            roseCount++;
+        }
+
+        function finishAnimation() {
+            clearInterval(bouquetInterval);
+            
+            // Ocultar el contenedor de frases dinámicas
+            phraseContainer.classList.add('fade-out');
+            
+            setTimeout(() => {
+                phraseContainer.style.display = 'none';
+                
+                // Mostrar Mensaje Final
+                finalMessage.classList.remove('hidden');
+                finalMessage.classList.add('flex', 'fade-in');
+                
+                // Darle a todos los ramos un efecto de latido suave al unísono
+                bouquetsWrapper.classList.add('bouquet-complete');
+            }, 1000);
+        }
+
+        startBtn.addEventListener('click', () => {
+            // Reproducir música (El click del usuario lo permite en Android)
+            jazzAudio.volume = 0.5; // Volumen agradable
+            jazzAudio.play().catch((err) => {
+                console.log("No se pudo auto-reproducir el audio, continuando animación.", err);
+            });
+
+            // Transición de pantallas
+            startScreen.classList.add('fade-out');
+            
+            setTimeout(() => {
+                startScreen.style.display = 'none';
+                mainContainer.classList.remove('hidden');
+                
+                // Iniciar lluvia de peluches (uno cada 600ms)
+                plushieInterval = setInterval(spawnPlushie, 600);
+                
+                // Añadir la primera rosa casi de inmediato
+                setTimeout(() => {
+                    addRose();
+                    // Iniciar el ciclo del resto del ramo (cada 3.2 segundos para leer con calma)
+                    bouquetInterval = setInterval(addRose, 3200); 
+                }, 500);
+
+            }, 800);
+        });
+
+    </script>
+</body>
+</html>
